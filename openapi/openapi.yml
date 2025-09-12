@@ -1,0 +1,508 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /api/tickets/{ticketId}:
+    put:
+      tags:
+        - Tickets
+      summary: Updates ticket in the database
+      description: Updates ticket in the database
+      operationId: updateTicket
+      parameters:
+        - name: ticketId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTicketRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json: {}
+        '404':
+          description: Field validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/tickets/create:
+    post:
+      tags:
+        - Tickets
+      summary: Creates ticket of the issue in the database
+      description: Creates ticket of the issue in the database
+      operationId: createTicket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTicketRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json: {}
+        '400':
+          description: Field validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/tickets/find/status/{status}:
+    get:
+      tags:
+        - Tickets
+      summary: Returns all the tickets by their status
+      description: Returns all the tickets by their status
+      operationId: getTicketsByStatus
+      parameters:
+        - name: status
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - OPEN
+              - IN_PROGRESS
+              - CLOSED
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json: {}
+        '400':
+          description: Field validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas:
+    ContentDisposition:
+      type: object
+      properties:
+        type:
+          type: string
+        name:
+          type: string
+        filename:
+          type: string
+        charset:
+          type: string
+        size:
+          type: integer
+          format: int64
+          deprecated: true
+        creationDate:
+          type: string
+          format: date-time
+          deprecated: true
+        modificationDate:
+          type: string
+          format: date-time
+          deprecated: true
+        readDate:
+          type: string
+          format: date-time
+          deprecated: true
+        inline:
+          type: boolean
+        formData:
+          type: boolean
+        attachment:
+          type: boolean
+    ErrorResponse:
+      type: object
+      properties:
+        body:
+          $ref: '#/components/schemas/ProblemDetail'
+        statusCode:
+          $ref: '#/components/schemas/HttpStatusCode'
+        titleMessageCode:
+          type: string
+        detailMessageArguments:
+          type: array
+          items:
+            type: object
+        detailMessageCode:
+          type: string
+        headers:
+          type: object
+          properties:
+            empty:
+              type: boolean
+            location:
+              type: string
+              format: uri
+            host:
+              type: object
+              properties:
+                address:
+                  type: object
+                  properties:
+                    address:
+                      type: array
+                      items:
+                        type: string
+                        format: byte
+                    hostAddress:
+                      type: string
+                    linkLocalAddress:
+                      type: boolean
+                    hostName:
+                      type: string
+                    multicastAddress:
+                      type: boolean
+                    anyLocalAddress:
+                      type: boolean
+                    loopbackAddress:
+                      type: boolean
+                    siteLocalAddress:
+                      type: boolean
+                    mcglobal:
+                      type: boolean
+                    mcnodeLocal:
+                      type: boolean
+                    mclinkLocal:
+                      type: boolean
+                    mcsiteLocal:
+                      type: boolean
+                    mcorgLocal:
+                      type: boolean
+                    canonicalHostName:
+                      type: string
+                port:
+                  type: integer
+                  format: int32
+                hostName:
+                  type: string
+                hostString:
+                  type: string
+                unresolved:
+                  type: boolean
+            all:
+              type: object
+              additionalProperties:
+                type: string
+              writeOnly: true
+            lastModified:
+              type: integer
+              format: int64
+            date:
+              type: integer
+              format: int64
+            contentLength:
+              type: integer
+              format: int64
+            origin:
+              type: string
+            range:
+              type: array
+              items:
+                $ref: '#/components/schemas/HttpRange'
+            allow:
+              uniqueItems: true
+              type: array
+              items:
+                $ref: '#/components/schemas/HttpMethod'
+            contentDisposition:
+              $ref: '#/components/schemas/ContentDisposition'
+            acceptCharset:
+              type: array
+              items:
+                type: string
+            cacheControl:
+              type: string
+            etag:
+              type: string
+            contentLanguage:
+              type: object
+              properties:
+                language:
+                  type: string
+                displayName:
+                  type: string
+                country:
+                  type: string
+                variant:
+                  type: string
+                script:
+                  type: string
+                unicodeLocaleAttributes:
+                  uniqueItems: true
+                  type: array
+                  items:
+                    type: string
+                unicodeLocaleKeys:
+                  uniqueItems: true
+                  type: array
+                  items:
+                    type: string
+                displayLanguage:
+                  type: string
+                displayScript:
+                  type: string
+                displayCountry:
+                  type: string
+                displayVariant:
+                  type: string
+                extensionKeys:
+                  uniqueItems: true
+                  type: array
+                  items:
+                    type: string
+                iso3Language:
+                  type: string
+                iso3Country:
+                  type: string
+            upgrade:
+              type: string
+            pragma:
+              type: string
+            vary:
+              type: array
+              items:
+                type: string
+            ifMatch:
+              type: array
+              items:
+                type: string
+            accept:
+              type: array
+              items:
+                $ref: '#/components/schemas/MediaType'
+            expires:
+              type: integer
+              format: int64
+            accessControlAllowHeaders:
+              type: array
+              items:
+                type: string
+            accessControlAllowCredentials:
+              type: boolean
+            accessControlAllowMethods:
+              type: array
+              items:
+                $ref: '#/components/schemas/HttpMethod'
+            accessControlAllowOrigin:
+              type: string
+            accessControlExposeHeaders:
+              type: array
+              items:
+                type: string
+            accessControlRequestHeaders:
+              type: array
+              items:
+                type: string
+            accessControlRequestMethod:
+              $ref: '#/components/schemas/HttpMethod'
+            acceptLanguage:
+              type: array
+              items:
+                type: object
+                properties:
+                  range:
+                    type: string
+                  weight:
+                    type: number
+                    format: double
+            basicAuth:
+              type: string
+              writeOnly: true
+            acceptLanguageAsLocales:
+              type: array
+              items:
+                type: object
+                properties:
+                  language:
+                    type: string
+                  displayName:
+                    type: string
+                  country:
+                    type: string
+                  variant:
+                    type: string
+                  script:
+                    type: string
+                  unicodeLocaleAttributes:
+                    uniqueItems: true
+                    type: array
+                    items:
+                      type: string
+                  unicodeLocaleKeys:
+                    uniqueItems: true
+                    type: array
+                    items:
+                      type: string
+                  displayLanguage:
+                    type: string
+                  displayScript:
+                    type: string
+                  displayCountry:
+                    type: string
+                  displayVariant:
+                    type: string
+                  extensionKeys:
+                    uniqueItems: true
+                    type: array
+                    items:
+                      type: string
+                  iso3Language:
+                    type: string
+                  iso3Country:
+                    type: string
+            accessControlMaxAge:
+              type: integer
+              format: int64
+            ifNoneMatch:
+              type: array
+              items:
+                type: string
+            acceptPatch:
+              type: array
+              items:
+                $ref: '#/components/schemas/MediaType'
+            connection:
+              type: array
+              items:
+                type: string
+            bearerAuth:
+              type: string
+              writeOnly: true
+            ifUnmodifiedSince:
+              type: integer
+              format: int64
+            ifModifiedSince:
+              type: integer
+              format: int64
+            contentType:
+              $ref: '#/components/schemas/MediaType'
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    HttpMethod:
+      type: object
+    HttpRange:
+      type: object
+    HttpStatusCode:
+      type: object
+      properties:
+        error:
+          type: boolean
+        is5xxServerError:
+          type: boolean
+        is2xxSuccessful:
+          type: boolean
+        is1xxInformational:
+          type: boolean
+        is4xxClientError:
+          type: boolean
+        is3xxRedirection:
+          type: boolean
+    MediaType:
+      type: object
+      properties:
+        type:
+          type: string
+        subtype:
+          type: string
+        parameters:
+          type: object
+          additionalProperties:
+            type: string
+        qualityValue:
+          type: number
+          format: double
+        charset:
+          type: string
+        concrete:
+          type: boolean
+        wildcardType:
+          type: boolean
+        wildcardSubtype:
+          type: boolean
+        subtypeSuffix:
+          type: string
+    ProblemDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+        properties:
+          type: object
+          additionalProperties:
+            type: object
+    UpdateTicketRequest:
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - OPEN
+            - IN_PROGRESS
+            - CLOSED
+    CreateTicketRequest:
+      required:
+        - description
+      type: object
+      properties:
+        description:
+          type: string
+        parentId:
+          type: string

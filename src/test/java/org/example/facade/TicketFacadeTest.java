@@ -6,6 +6,7 @@ import org.example.dto.request.UpdateTicketRequest;
 import org.example.dto.response.TicketResponse;
 import org.example.entity.TicketEntity;
 import org.example.enums.TicketStatus;
+import org.example.exception.TicketRepositoryException;
 import org.example.mapper.TicketMapper;
 import org.example.mapper.TicketMapperImpl;
 import org.example.service.ManageTicketsService;
@@ -42,7 +43,7 @@ public class TicketFacadeTest {
 
 
     @Test
-    void createTicket_shouldReturnMappedResponse() {
+    void createTicket_shouldReturnMappedResponse() throws TicketRepositoryException {
         CreateTicketRequest request = new CreateTicketRequest();
         request.setDescription("Test");
 
@@ -57,7 +58,7 @@ public class TicketFacadeTest {
     }
 
     @Test
-    void updateTicket_shouldReturnUpdatedResponse() {
+    void updateTicket_shouldReturnUpdatedResponse() throws TicketRepositoryException {
         String ticketId = "AD-1";
         UpdateTicketRequest request = new UpdateTicketRequest();
         request.setStatus(TicketStatus.IN_PROGRESS);
@@ -72,7 +73,7 @@ public class TicketFacadeTest {
     }
 
     @Test
-    void updateTicket_ticketNotFound() {
+    void updateTicket_ticketNotFound() throws TicketRepositoryException {
         String ticketId = "AD-404";
         UpdateTicketRequest request = new UpdateTicketRequest();
         request.setStatus(TicketStatus.CLOSED);
@@ -89,7 +90,7 @@ public class TicketFacadeTest {
 
 
     @Test
-    void getTicketsByStatus_shouldMapEntitiesToResponses() {
+    void getTicketsByStatus_shouldMapEntitiesToResponses() throws TicketRepositoryException {
         List<TicketEntity> entities = List.of(
                 TicketEntity.builder().id("AD-1").status(OPEN).build()
         );

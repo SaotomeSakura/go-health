@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Response payload representing a ticket.
+ * Used for displaying ticket details in CLI or API responses.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

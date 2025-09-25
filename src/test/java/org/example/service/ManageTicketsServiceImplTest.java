@@ -5,6 +5,7 @@ import org.example.dto.request.CreateTicketRequest;
 import org.example.dto.request.UpdateTicketRequest;
 import org.example.entity.TicketEntity;
 import org.example.enums.TicketStatus;
+import org.example.exception.TicketRepositoryException;
 import org.example.mapper.TicketMapper;
 import org.example.mapper.TicketMapperImpl;
 import org.example.repository.GoogleSheetsTicketRepository;
@@ -36,19 +37,22 @@ public class ManageTicketsServiceImplTest {
     @Mock
     private TicketRepository ticketRepository;
 
+    @Mock
+    private TicketIdGenerator idGenerator;
+
     private TicketMapper ticketMapper = Mappers.getMapper(TicketMapper.class);
 
 
     @BeforeEach
     void setUp() {
         ticketMapper = new TicketMapperImpl();
-        service = new ManageTicketsServiceImpl(ticketRepository, ticketMapper);
+        service = new ManageTicketsServiceImpl(ticketRepository, ticketMapper, idGenerator);
     }
 
 
 
     @Test
-    public void createTicket_OK() {
+    public void createTicket_OK() throws TicketRepositoryException {
         CreateTicketRequest request = new CreateTicketRequest();
         request.setDescription("Test description");
         request.setParentId("AD-01");
@@ -75,7 +79,7 @@ public class ManageTicketsServiceImplTest {
     }
 
     @Test
-    public void updateTicket_OK() {
+    public void updateTicket_OK() throws TicketRepositoryException {
         String ticketId = "AD-1";
         UpdateTicketRequest request = new UpdateTicketRequest();
         request.setStatus(TicketStatus.CLOSED);
@@ -94,7 +98,7 @@ public class ManageTicketsServiceImplTest {
     }
 
     @Test
-    void updateTicket_ticketNotFound() {
+    void updateTicket_ticketNotFound() throws TicketRepositoryException {
         String ticketId = "AD-404";
         UpdateTicketRequest request = new UpdateTicketRequest();
         request.setStatus(TicketStatus.CLOSED);
@@ -110,7 +114,7 @@ public class ManageTicketsServiceImplTest {
 
 
     @Test
-    public void getTicketsByStatus() {
+    public void getTicketsByStatus() throws TicketRepositoryException {
         List<TicketEntity> tickets = List.of(
                 TicketEntity.builder().id("AD-1").status(TicketStatus.OPEN).build()
         );

@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Global exception handler for REST controllers.
+ * Captures and transforms common exceptions into meaningful HTTP responses.
+ * Covers validation errors, entity lookup failures, and generic server errors.
+ */
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -43,5 +48,12 @@ public class GlobalExceptionHandler {
         log.warn("Entity not found: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
+        log.warn("Illegal argument: {}", ex.getMessage());
+        return ResponseEntity.badRequest().body("Invalid input: " + ex.getMessage());
+    }
+
 
 }

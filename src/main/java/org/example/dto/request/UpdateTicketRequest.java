@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.enums.TicketStatus;
 
+/**
+ * Request payload for updating the status of an existing ticket.
+ */
 @Getter
 @Setter
 public class UpdateTicketRequest {

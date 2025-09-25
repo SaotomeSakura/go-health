@@ -31,16 +31,16 @@ public class TicketEntity {
     private LocalDateTime updatedAt;
 
     //posibility of migrating to JPA/Hibernate.
-//    @PrePersist
-//    public void onCreate() {
-//        log.info("Setting createdAt for ticket {}", id);
-//        this.createdAt = LocalDateTime.now();
-//    }
-//
-//    @PreUpdate
-//    public void onUpdate() {
-//        log.info("Updating updatedAt for ticket {}", id);
-//        this.updatedAt = LocalDateTime.now();
-//    }
+    @PrePersist
+    public void onCreate() {
+        log.info("Setting createdAt for ticket {}", id);
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        log.info("Updating updatedAt for ticket {}", id);
+        this.updatedAt = LocalDateTime.now();
+    }
 
 }

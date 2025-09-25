@@ -5,6 +5,7 @@ import org.example.dto.request.UpdateTicketRequest;
 import org.example.dto.response.TicketResponse;
 import org.example.entity.TicketEntity;
 import org.example.enums.TicketStatus;
+import org.example.exception.TicketRepositoryException;
 import org.example.facade.TicketFacade;
 import org.example.mapper.TicketMapper;
 import org.example.mapper.TicketMapperImpl;
@@ -40,7 +41,7 @@ class TicketControllerTest {
 
 
     @Test
-    void createTicket_shouldReturnResponse() {
+    void createTicket_shouldReturnResponse() throws TicketRepositoryException {
         CreateTicketRequest request = new CreateTicketRequest();
         request.setDescription("Test");
 
@@ -55,7 +56,7 @@ class TicketControllerTest {
     }
 
     @Test
-    void updateTicket_shouldReturnUpdatedResponse() {
+    void updateTicket_shouldReturnUpdatedResponse() throws TicketRepositoryException {
         String ticketId = "AD-1";
         UpdateTicketRequest request = new UpdateTicketRequest();
         request.setStatus(TicketStatus.IN_PROGRESS);
@@ -77,7 +78,7 @@ class TicketControllerTest {
     }
 
     @Test
-    void getTicketsByStatus_shouldReturnList() {
+    void getTicketsByStatus_shouldReturnList() throws TicketRepositoryException {
         TicketEntity entity = TicketEntity.builder().id("AD-1").status(TicketStatus.OPEN).build();
         when(ticketService.getTicketsByStatus(TicketStatus.OPEN)).thenReturn(List.of(entity));
 

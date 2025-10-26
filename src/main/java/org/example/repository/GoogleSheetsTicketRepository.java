@@ -9,6 +9,7 @@ import org.example.entity.TicketEntity;
 import org.example.enums.TicketStatus;
 import org.example.exception.TicketRepositoryException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -94,9 +95,10 @@ public class GoogleSheetsTicketRepository implements TicketRepository{
         }
     }
 
-    public List<TicketEntity> findAllByStatus(TicketStatus status) throws TicketRepositoryException {
+    @Cacheable(value = "allTicketsCache")
+    public List<TicketEntity> findAll() throws TicketRepositoryException {
         try {
-            log.info("Fetching tickets with status: {}", status);
+            log.info("Fetching tickets from database: {}", spreadsheetId);
 
             Sheets sheetsService = sheetsProvider.getSheetsService();
 
@@ -112,7 +114,6 @@ public class GoogleSheetsTicketRepository implements TicketRepository{
             return rows.stream()
                     .skip(1)
                     .map(this::mapRowToEntity)
-                    .filter(ticket -> ticket.getStatus() == status)
                     .toList();
 
         } catch (Exception e) {

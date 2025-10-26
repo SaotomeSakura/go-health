@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
+
+import static java.util.Locale.filter;
 
 /**
  * Implementation of {@link ManageTicketsService} that handles core ticket operations.
@@ -78,7 +79,9 @@ public class ManageTicketsServiceImpl implements ManageTicketsService  {
      */
     public List<TicketEntity> getTicketsByStatus(TicketStatus status) throws TicketRepositoryException {
         log.info("Fetching tickets with status: {}", status);
-        return ticketRepository.findAllByStatus(status);
+        return ticketRepository.findAll().stream()
+                .filter(ticket -> ticket.getStatus() == status)
+                .toList();
     }
 
     /**

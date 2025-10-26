@@ -9,6 +9,6 @@ import java.util.List;
 public interface TicketRepository {
     TicketEntity saveTicket(TicketEntity ticket) throws TicketRepositoryException;
     TicketEntity findById(String ticketId) throws TicketRepositoryException;
-    List<TicketEntity> findAllByStatus(TicketStatus status) throws TicketRepositoryException;
+    List<TicketEntity> findAll() throws TicketRepositoryException;
 }
 

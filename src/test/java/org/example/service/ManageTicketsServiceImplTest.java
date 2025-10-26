@@ -8,7 +8,6 @@ import org.example.enums.TicketStatus;
 import org.example.exception.TicketRepositoryException;
 import org.example.mapper.TicketMapper;
 import org.example.mapper.TicketMapperImpl;
-import org.example.repository.GoogleSheetsTicketRepository;
 import org.example.repository.TicketRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.example.enums.TicketStatus.OPEN;
 import static org.junit.jupiter.api.Assertions.*;
@@ -119,7 +117,7 @@ public class ManageTicketsServiceImplTest {
                 TicketEntity.builder().id("AD-1").status(TicketStatus.OPEN).build()
         );
 
-        when(ticketRepository.findAllByStatus(TicketStatus.OPEN)).thenReturn(tickets);
+        when(ticketRepository.findAll()).thenReturn(tickets);
 
         List<TicketEntity> result = service.getTicketsByStatus(OPEN);
 
